@@ -1,7 +1,6 @@
 package com.example.user_api.controller;
 
 import com.example.user_api.entity.User;
-import com.example.user_api.repository.UserRepository;
 import com.example.user_api.service.UserService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +19,7 @@ public class UserAPIController {
 
     @PostMapping
     public Mono<User> postUser(@RequestBody User user) {
-        return userService.saveUser(user);
+        return userService.createUser(user);
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -28,8 +27,13 @@ public class UserAPIController {
         return userService.findAllUsers();
     }
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<Boolean> getUserByEmail(@RequestBody User user) {
-        return userService.login(user);
+    @GetMapping(value = "/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Mono<User> getUserByEmail(@PathVariable String email) {
+        return userService.getUserByEmail(email);
+    }
+
+    @PostMapping("/login")
+    public Mono<User> login(@RequestBody User user) {
+        return userService.authenticate(user.getEmail(), user.getPassword());
     }
 }
