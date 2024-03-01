@@ -6,6 +6,8 @@ import com.example.wallet_api.repository.WalletRepository;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
+
 @Service
 public class WalletService {
 
@@ -26,6 +28,9 @@ public class WalletService {
     public Mono<Wallet> makeTransaction(String userId, Transaction transaction) {
         return walletRepository.getByUserId(userId)
                 .flatMap(wallet -> {
+                    if (wallet.getTransactions() == null){
+                        wallet.setTransactions(new ArrayList<>());
+                    }
                     wallet.getTransactions().add(transaction);
                     return walletRepository.save(wallet);
                 });

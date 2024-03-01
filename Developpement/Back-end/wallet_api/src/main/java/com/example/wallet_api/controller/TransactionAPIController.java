@@ -2,10 +2,8 @@ package com.example.wallet_api.controller;
 
 import com.example.wallet_api.entity.Transaction;
 import com.example.wallet_api.service.TransactionService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 @RestController
@@ -21,4 +19,8 @@ public class TransactionAPIController {
         return transactionService.createTransaction(transaction);
     }
 
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Mono<Transaction> getTransactionById(@PathVariable String id){
+        return transactionService.getTransactionById(id);
+    }
 }

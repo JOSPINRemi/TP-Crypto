@@ -17,4 +17,8 @@ public class TransactionService {
     public Mono<Transaction> createTransaction(Transaction transaction){
         return transactionRepository.save(transaction);
     }
+
+    public Mono<Transaction> getTransactionById(String id) {
+        return transactionRepository.findById(id);
+    }
 }
